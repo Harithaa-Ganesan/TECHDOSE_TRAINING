@@ -25,39 +25,70 @@ Output: [1]
 
 SOLUTION:
 
-class Solution {
-    public void nextPermutation(int[] nums) {
-        if(nums.length < 2)
-            return;
-        int i = nums.length-2;
-        
-        // find till pattern(all descending) breaks
-        while(i>=0 && nums[i]>=nums[i+1])
-            i--;
-        
-        // full descending
-        if(i<0){
-            reverse(nums, i+1, nums.length-1);
+import java.util.Scanner;
+public class Main{
+      static int[] swap(int a,int b,int[] nums){
+        int temp=nums[a];
+        nums[a]=nums[b];
+        nums[b]=temp;
+        return nums;
+    }
+     static int[] sort(int a,int b,int[] nums){
+        for(int i=a;i<b;i++){
+            for(int j=i+1;j<b;j++){
+                if(nums[i]>nums[j]){
+                    int temp=nums[i];
+                    nums[i]=nums[j];
+                    nums[j]=temp;
+                }
+            }
         }
-        //if there is a break in the pattern
-        else {
-            int j = nums.length-1;
-            while(nums[j]<=nums[i]) // find next greater element
-                j--;
-            swap(nums, i, j);
-            reverse(nums, i+1, nums.length-1);
-        }     
+         return nums;
     }
     
-    public void swap(int[] nums, int i, int j){
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
-    
-    public void reverse(int[] nums, int i, int j){
-        while(i<j){
-            swap(nums,i++,j--);
+     static void nextPermutation(int[] nums){
+        int len=nums.length;
+        int lastin=-1;
+        for(int i=1;i<len;i++){
+            if(nums[i]>nums[i-1]){
+                lastin=i;
+            }
+        }
+        if(lastin==-1){
+            for(int i=0;i<len/2;i++){
+                int temp=nums[i];
+                nums[i]=nums[len-1-i];
+                nums[len-1-i]=temp;
+            }
+        }
+        else{
+            int index=lastin;
+            for(int i=lastin;i<len;i++){
+                if(nums[i]<nums[index] && nums[i]>nums[lastin-1]){
+                    index=i;
+                }
+            }
+           swap(lastin-1,index,nums);
+           sort(lastin,len,nums);
+        }
+        for(int i=0;i<len;i++){
+            System.out.print(nums[i]+" ");
+        }
+     }
+    public static void main(String[] args){
+        Scanner scanner= new Scanner(System.in);
+        int n = scanner.nextInt();
+        int[] arr = new int[n];
+      
+        for(int index = 0;index<n;index++){
+            arr[index]=scanner.nextInt();
+        }
+        if(arr.length == 1){
+          for(int i=0;i<n;i++)
+            System.out.print(arr[i]+" ");
+        }
+        else{
+           nextPermutation(arr);
         }
     }
 }

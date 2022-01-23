@@ -25,6 +25,8 @@ medianFinder.findMedian(); // return 1.5 (i.e., (1 + 2) / 2)
 medianFinder.addNum(3);    // arr[1, 2, 3]
 medianFinder.findMedian(); // return 2.0
 
+SOLUTION:
+
 class MedianFinder {
         private Queue<Integer> left, right;
 

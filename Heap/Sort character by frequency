@@ -1,0 +1,82 @@
+Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
+
+Return the sorted string. If there are multiple answers, return any of them.
+
+ 
+
+Example 1:
+
+Input: s = "tree"
+Output: "eert"
+Explanation: 'e' appears twice while 'r' and 't' both appear once.
+So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+Example 2:
+
+Input: s = "cccaaa"
+Output: "aaaccc"
+Explanation: Both 'c' and 'a' appear three times, so both "cccaaa" and "aaaccc" are valid answers.
+Note that "cacaca" is incorrect, as the same characters must be together.
+Example 3:
+
+Input: s = "Aabb"
+Output: "bbAa"
+Explanation: "bbaA" is also a valid answer, but "Aabb" is incorrect.
+Note that 'A' and 'a' are treated as two different characters.
+ 
+
+Constraints:
+
+1 <= s.length <= 5 * 105
+s consists of uppercase and lowercase English letters and digits.
+
+SOLUTION:
+
+class Solution {
+    public String frequencySort(String s) {
+        
+        List<Map.Entry<Character,Integer>> list = getFrequency(s.toCharArray());
+        
+        StringBuffer result = new StringBuffer("");
+        
+        for(int i=0;i<list.size();i++){
+                  int count = list.get(i).getValue();
+                  char key = list.get(i).getKey();
+
+                while(count != 0){
+                        result.append(key);
+                        count--;
+                 }
+        }
+        
+        
+        return result.toString();
+        
+    }
+    
+    public List getFrequency(char[] data){
+        
+        HashMap<Character,Integer> map = new HashMap<>();
+        
+        // count updated for each character
+        for(char i:data){
+            if(!map.containsKey(i)){
+                map.put(i,1);
+            }else{
+                map.compute(i,(k,v)-> ++v);
+            }
+        }
+        
+        // Convert to set
+        Set<Map.Entry<Character,Integer>> set = map.entrySet();
+        
+        // convert to list for sorting
+        List<Map.Entry<Character,Integer>> list = new ArrayList<>(set);
+        
+        // sorted in descending order
+        Collections.sort(list, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+        
+        return list;    
+        
+    }
+    
+}
